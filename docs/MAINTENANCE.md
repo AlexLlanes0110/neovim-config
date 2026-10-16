@@ -1,6 +1,6 @@
 # Maintenance and Sync Workflow
 
-This repository is the **single source of truth** for the shared Neovim configuration. The MacBook and ITPro server run the modular configuration; Windows support is planned.
+This repository is the **single source of truth** for the shared Neovim configuration. The MacBook, ITPro Linux server, and Lenovo Windows workstation run the modular configuration. The repository is public for read/clone access; pushing changes still requires GitHub authentication.
 
 ## Daily workflow
 
@@ -75,7 +75,7 @@ Inspect `:messages`, `:Lazy`, `:checkhealth`, `:Mason`, and `:ConformInfo` as ap
 
 ## Security and contribution conventions
 
-- Keep the repository private until reviewed for publication.
+- The repository is public: review both working-tree files and commit history before publishing secrets.
 - Never commit tokens, passwords, SSH keys, `.env` files, or machine-specific secrets.
 - Review `git diff --cached` before each push; `.gitignore` does not protect secrets already tracked.
 - Avoid force-pushes on shared branches.
