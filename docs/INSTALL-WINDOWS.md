@@ -127,7 +127,7 @@ This formatting test **passed on the Lenovo**. It confirms that Conform can run 
 
 ## 6. Validate features and LSP
 
-The Lenovo had all 29 Lazy plugin specifications installed, 12 LSP packages installed through Mason, and the Treesitter parsers listed above. Run:
+The Lenovo had all 29 Lazy plugin specifications installed, 12 LSP packages initially installed through Mason, and the Treesitter parsers listed above. After resolving the SQLS build issue described below, Mason also reported `sqls` installed. Run:
 
 - `Ctrl+b` in Normal mode: toggle nvim-tree.
 - `Ctrl+p`: find files.
@@ -139,7 +139,78 @@ The Lenovo had all 29 Lazy plugin specifications installed, 12 LSP packages inst
 
 Optional warnings (Perl/Ruby/Go/Java providers, LuaRocks, `jsregexp` for LuaSnip) do not automatically mean core configuration is broken. Confirm requirements before installing additional runtimes.
 
-## 7. Update this machine
+## 7. SQLS language server: resolved Windows installation issue
+
+On the Lenovo, `mason-lspconfig.nvim` lists `sqls` in `ensure_installed`. Mason repeatedly attempted installation because the `sqls` package had not been installed successfully. The rest of Neovim continued to work.
+
+### Problem 1: Go was missing
+
+The Mason log contained:
+
+~~~text
+Installation failed for Package(name=sqls)
+Could not find executable "go" in PATH.
+~~~
+
+Install Go and restart PowerShell so the new PATH is visible:
+
+~~~powershell
+winget install --id GoLang.Go -e --accept-package-agreements --accept-source-agreements
+go version
+~~~
+
+The Lenovo validated `go version go1.27.0 windows/amd64`.
+
+### Problem 2: SQLS could not compile its Oracle driver dependency
+
+Running `go install github.com/sqls-server/sqls@latest` initially failed while compiling `github.com/godror/godror`, with errors such as `undefined: VersionInfo`, `undefined: StartupMode`, and `undefined: ShutdownMode`. The required C compilation toolchain was not available in the initial Windows environment.
+
+Install the MinGW-w64 GCC toolchain, restart PowerShell, and verify the compiler and CGO configuration:
+
+~~~powershell
+winget install --id BrechtSanders.WinLibs.POSIX.UCRT -e --accept-package-agreements --accept-source-agreements
+gcc --version
+go env CGO_ENABLED
+~~~
+
+The Lenovo validated GCC **16.2.0** (MinGW-w64 UCRT/POSIX). With GCC available, the Go build succeeded:
+
+~~~powershell
+go install github.com/sqls-server/sqls@latest
+Get-Command sqls -ErrorAction SilentlyContinue | Select-Object Source
+~~~
+
+The resulting executable was in the user Go binary directory, `%USERPROFILE%\go\bin\sqls.exe`. For other machines, use `go env GOPATH` to locate the correct `bin` directory and ensure it is on PATH.
+
+### Problem 3: Mason still showed SQLS as not installed
+
+An independently built `sqls.exe` does **not** count as a Mason-managed installation. The check still returned `SQLS_INSTALLED=false` even though PowerShell found the executable.
+
+**Validated solution:** open Neovim interactively, then run `:MasonInstall sqls` and **wait until installation finishes** before closing Neovim.
+
+~~~powershell
+nvim
+~~~
+
+Inside Neovim:
+
+~~~vim
+:MasonInstall sqls
+~~~
+
+After the installation completes and Neovim closes, verify:
+
+~~~powershell
+nvim --headless "+lua local p=require('mason-registry').get_package('sqls'); print('SQLS_INSTALLED='..tostring(p:is_installed()))" "+qa!" 2>&1
+~~~
+
+**Verified Lenovo result:** `SQLS_INSTALLED=true`. Neovim also completed a headless startup check without visible errors.
+
+Do **not** run an asynchronous Mason install followed immediately by `+qa!`; that exits before the package finishes and aborts installation. The attempted Lua call `p:install():wait(300000)` also failed (`attempt to call method 'wait' (a nil value)`) and must not be copied as a working command.
+
+No Lua configuration changes were needed: the shared `sqls` declaration remains enabled for macOS, Linux, and Windows.
+
+## 8. Update this machine
 
 ~~~powershell
 Set-Location (Join-Path $env:LOCALAPPDATA 'nvim')
