@@ -15,7 +15,7 @@ The goal is to provide a portable, maintainable, and documented configuration th
 | --------------------- | ---------- |
 | macOS (Apple Silicon) | Configured |
 | Linux (Ubuntu Server) | Configured |
-| Windows (Lenovo)      | Planned    |
+| Windows (Lenovo)      | Configured |
 
 ## Features
 
@@ -71,17 +71,17 @@ The goal is to provide a portable, maintainable, and documented configuration th
 
 ## Installation
 
-Platform-specific installation instructions will be provided in the `docs/` directory.
+Installation guides: [macOS](docs/INSTALL-MACOS.md), [Linux](docs/INSTALL-LINUX.md), and [Windows](docs/INSTALL-WINDOWS.md). See also [Keybindings](docs/KEYMAPS.md), [Plugins](docs/PLUGINS.md), and [Maintenance](docs/MAINTENANCE.md).
 
 ## Roadmap
 
 - [x] Configure macOS
 - [x] Configure Ubuntu Server
 - [x] Modularize Neovim configuration
-- [ ] Document plugins and keybindings
+- [x] Document plugins and keybindings
 - [ ] Create installation scripts
-- [ ] Configure Windows
-- [ ] Establish a cross-platform update workflow
+- [x] Configure Windows
+- [x] Document a cross-platform update workflow
 
 ## License
 
