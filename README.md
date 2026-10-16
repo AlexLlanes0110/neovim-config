@@ -1,57 +1,88 @@
-# Neovim Config
 
-Configuración personal y modular de Neovim para macOS, Linux y Windows.
+# Neovim Configuration
 
-## Objetivo
+A modular, cross-platform Neovim configuration designed for development, infrastructure management, and system administration.
 
-Mantener una configuración única, documentada y versionada en GitHub
-para utilizar Neovim en diferentes equipos.
+## Overview
 
-## Plataformas
+This repository maintains a consistent Neovim environment across multiple operating systems.
 
-- macOS (MacBook)
-- Linux (servidor ITPro)
-- Windows (Lenovo, pendiente de instalación)
+The goal is to provide a portable, maintainable, and documented configuration that can be deployed on new machines with minimal setup.
 
-## Características
+## Supported Platforms
+
+| Platform              | Status     |
+| --------------------- | ---------- |
+| macOS (Apple Silicon) | Configured |
+| Linux (Ubuntu Server) | Configured |
+| Windows (Lenovo)      | Planned    |
+
+## Features
 
 - Neovim 0.12.6
-- Gestión de plugins mediante lazy.nvim
-- Configuración modular en Lua
-- Explorador lateral con nvim-tree
-- Administración de archivos con Oil.nvim
-- Búsqueda de archivos con Telescope
-- Autocompletado y servidores LSP
-- Formateo automático mediante Conform
-- Resaltado de sintaxis mediante Treesitter
-- Tema Catppuccin
+- Modular Lua configuration
+- lazy.nvim plugin management
+- Catppuccin theme
+- nvim-tree file explorer
+- Oil.nvim file management
+- Telescope fuzzy finder
+- LSP integration
+- Autocompletion and snippets
+- Treesitter syntax highlighting
+- Conform formatting
+- Git integration
 
-## Atajos principales
+## Project Structure
 
-| Atajo | Función |
-|------|---------|
-| Ctrl+B | Abrir/cerrar explorador lateral |
-| Ctrl+P | Buscar archivos |
-| - | Abrir Oil.nvim |
-| gg | Inicio del archivo |
-| G | Final del archivo |
-| Ctrl+D | Bajar media pantalla |
-| Ctrl+U | Subir media pantalla |
+```text
+.
+├── init.lua
+├── lazy-lock.json
+├── lua/
+│   ├── config/
+│   │   ├── autocmds.lua
+│   │   ├── keymaps.lua
+│   │   ├── lazy.lua
+│   │   └── options.lua
+│   └── plugins/
+│       ├── completion.lua
+│       ├── diagnostics.lua
+│       ├── editing.lua
+│       ├── filetree.lua
+│       ├── formatting.lua
+│       ├── lsp.lua
+│       ├── navigation.lua
+│       ├── treesitter.lua
+│       └── ui.lua
+└── docs/
+```
 
-## Estructura
+## Keybindings
 
-- `init.lua`: punto de entrada.
-- `lua/config/`: opciones, atajos y configuración general.
-- `lua/plugins/`: configuración modular de plugins.
-- `lazy-lock.json`: versiones fijadas de plugins.
+| Shortcut | Action |
+|----------|--------|
+| Ctrl+B | Toggle file explorer |
+| Ctrl+P | Find files |
+| - | Open Oil.nvim |
+| gg | Go to beginning of file |
+| G | Go to end of file |
+| Ctrl+D | Scroll down half a page |
+| Ctrl+U | Scroll up half a page |
 
-## Instalación
+## Installation
 
-Las instrucciones específicas para macOS, Linux y Windows
-se documentarán en `docs/`.
+Platform-specific installation instructions will be provided in the `docs/` directory.
 
-## Estado
+## Roadmap
 
-- macOS: configurado.
-- Linux: configurado.
-- Windows: pendiente.
+- [x] Configure macOS
+- [x] Configure Ubuntu Server
+- [x] Modularize Neovim configuration
+- [ ] Document plugins and keybindings
+- [ ] Create installation scripts
+- [ ] Configure Windows
+- [ ] Establish a cross-platform update workflow
+
+## License
+
+No license has been selected yet.
